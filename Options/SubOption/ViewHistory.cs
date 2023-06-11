@@ -1,8 +1,10 @@
-﻿namespace MathGame.MiniGames.SpecialGames
+﻿using MathGame.MiniGames.MathGames;
+
+namespace MathGame.Options.SubOption
 {
-    internal class ViewHistory : IMiniGame
+    internal class ViewHistory : IOption
     {
-        public IMiniGame? Play()
+        public void Play()
         {
 
             var input = "";
@@ -16,7 +18,6 @@
                     ShowGameDetails(input);
                 }
             }
-            return new Menu();
         }
 
         private static void ShowGameDetails(string? input)
@@ -52,5 +53,7 @@
             Console.WriteLine("Write 'get <id>' to get game details");
             Console.WriteLine("Write back to go back to menu");
         }
+
+        public bool ShouldEndProgram() => throw new NotImplementedException();
     }
 }

@@ -1,26 +1,22 @@
-﻿namespace MathGame
+﻿using MathGame.MiniGames.MathGames;
+
+namespace MathGame
 {
     public static class GameHistoryService
     {
-        public static List<PlayedGame> PlayedGames { get; private set; } = new();
+        private static readonly List<PlayedGame> PlayedGames = new();
 
-        public static void AddGameToHistory(
-            IEnumerable<PlayedGameRecord> records,
-            int correctAnswers,
-            int wrongAnswers,
-            string gameName,
-            long totalTimeInMiliseconds)
+        public static void AddGameToHistory(IMathGame game)
         {
-            var accuracy = correctAnswers / (double)(wrongAnswers + correctAnswers);
             PlayedGames.Add(new PlayedGame
             {
+                accuracy = game.CorrectAnswers / (game.CorrectAnswers + game.WrongAnswers),
+                correctAnswers = game.CorrectAnswers,
+                wrongAnswers = game.WrongAnswers,
+                gameName = game.GameName,
                 id = PlayedGames.Count,
-                totalTimeInMiliseconds = totalTimeInMiliseconds,
-                records = records,
-                wrongAnswers = wrongAnswers,
-                gameName = gameName,
-                accuracy = accuracy,
-                correctAnswers = correctAnswers,
+                records = game.Records,
+                totalTimeInMiliseconds = game.TotalMiliseconds,
             });
         }
         public static IEnumerable<string> GetHistoryAsString() =>

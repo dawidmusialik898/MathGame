@@ -1,12 +1,14 @@
-﻿namespace MathGame.MiniGames.SpecialGames
+﻿using MathGame.MiniGames.MathGames;
+
+namespace MathGame.Options.SubOption
 {
-    internal class Quit : IMiniGame
+    internal class Quit : IOption, ISubOption
     {
-        public IMiniGame? Play()
+        public void Show()
         {
             Console.Clear();
             Console.WriteLine("Do u really want to quit? y=yes/n=no");
-            IMiniGame? output = null;
+            IMathGame? output = null;
             var readKey = true;
 
             while (readKey)
@@ -17,13 +19,15 @@
                 {
                     readKey = false;
                 }
-                else if(key.KeyChar == 'n')
+                else if (key.KeyChar == 'n')
                 {
-                    output = new Menu();
+                    //output = new Menu();
                     readKey = false;
                 }
             }
-            return output;
+            //return output;
         }
+
+        public bool ShouldEndProgram() => throw new NotImplementedException();
     }
 }
