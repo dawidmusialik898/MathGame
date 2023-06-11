@@ -2,6 +2,8 @@
 {
     public interface IMiniGame
     {
-        public IMiniGame? Run();
+        public IMiniGame? Play();
+        public char GetOperator();
+        public (int first, int second, int result) GetEquasionArguments();
     }
 }

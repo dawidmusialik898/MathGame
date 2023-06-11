@@ -2,14 +2,26 @@
 
 namespace MathGame.MiniGames.SpecialGames
 {
-    public class Menu : IMiniGame
+    public class Menu
     {
-        public IMiniGame? Run()
+        public void Run()
         {
             Show();
 
-            IMiniGame? output = null;
+            var game = ChooseOption();
 
+            var (first, second, result) = game.GetEquasionArguments();
+            var ope = game.GetOperator();
+
+            Console.Clear();
+            Console.WriteLine("\nType end to end the game");
+            Console.WriteLine($"\n{first} {ope} {second}");
+
+        }
+
+        private static IMiniGame ChooseOption()
+        {
+            IMiniGame? output= null;
             while (output is null)
             {
                 var key = Console.ReadKey();
@@ -25,6 +37,7 @@ namespace MathGame.MiniGames.SpecialGames
                     _ => null,
                 };
             }
+
             return output;
         }
 

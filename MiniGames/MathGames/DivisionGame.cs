@@ -2,6 +2,6 @@
 {
     internal class DivisionGame : IMiniGame
     {
-        public IMiniGame? Run() => throw new NotImplementedException();
+        public IMiniGame? Play() => throw new NotImplementedException();
     }
 }

@@ -4,6 +4,6 @@ namespace MathGame.MiniGames.SpecialGames
 {
     internal class RandomGame : IMiniGame
     {
-        public IMiniGame? Run() => throw new NotImplementedException();
+        public IMiniGame? Play() => throw new NotImplementedException();
     }
 }

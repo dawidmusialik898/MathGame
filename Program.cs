@@ -2,7 +2,7 @@
 using MathGame.MiniGames;
 using MathGame.MiniGames.SpecialGames;
 
-IMiniGame? game = new Menu();
+var game = new Menu();
 
 do
 {

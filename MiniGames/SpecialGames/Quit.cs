@@ -2,7 +2,7 @@
 {
     internal class Quit : IMiniGame
     {
-        public IMiniGame? Run()
+        public IMiniGame? Play()
         {
             Console.Clear();
             Console.WriteLine("Do u really want to quit? y=yes/n=no");

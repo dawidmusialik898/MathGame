@@ -2,7 +2,7 @@
 {
     internal class ViewHistory : IMiniGame
     {
-        public IMiniGame? Run()
+        public IMiniGame? Play()
         {
 
             var input = "";

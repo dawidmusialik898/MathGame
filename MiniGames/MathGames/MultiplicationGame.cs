@@ -2,6 +2,9 @@
 {
     internal class MultiplicationGame : IMiniGame
     {
-        public IMiniGame? Run() => throw new NotImplementedException();
+        public IMiniGame? Play()
+        {
+
+        }
     }
 }
