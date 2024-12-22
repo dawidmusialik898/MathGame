@@ -90,13 +90,13 @@ namespace MathGame
                 var key = Console.ReadKey();
                 output = key.KeyChar switch
                 {
-                    'a' => new AdditionGame(),
-                    's' => new SubstractionGame(),
-                    'm' => new MultiplicationGame(),
-                    'd' => new DivisionGame(),
-                    'x' => new RandomGame(),
-                    'v' => new ViewHistory(),
-                    'q' => new Quit(),
+                    'a' or 'A' => new AdditionGame(),
+                    's' or 'S' => new SubstractionGame(),
+                    'm' or 'M' => new MultiplicationGame(),
+                    'd' or 'D' => new DivisionGame(),
+                    'x' or 'X' => new RandomGame(),
+                    'v' or 'V' => new ViewHistory(),
+                    'q' or 'Q' => new Quit(),
                     _ => null,
                 };
             }
