@@ -23,9 +23,9 @@ namespace MathGame
                     GameHistoryService.AddGameToHistory(game);
                     shouldEndProgram = option.ShouldEndProgram();
                 }
-                else if (option is ISubOption subOption)
+                else if (option is Quit quit)
                 {
-
+                    quit.Show();
                     shouldEndProgram = option.ShouldEndProgram();
                 }
             }

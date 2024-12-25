@@ -2,13 +2,13 @@
 
 namespace MathGame.Options.SubOption
 {
-    internal class Quit : IOption, ISubOption
+    internal class Quit : IOption 
     {
+        private bool _shouldEndProgram = false;
         public void Show()
         {
             Console.Clear();
             Console.WriteLine("Do u really want to quit? y=yes/n=no");
-            IMathGame? output = null;
             var readKey = true;
 
             while (readKey)
@@ -18,16 +18,16 @@ namespace MathGame.Options.SubOption
                 if (key.KeyChar == 'y')
                 {
                     readKey = false;
+                    _shouldEndProgram = true;
                 }
                 else if (key.KeyChar == 'n')
                 {
-                    //output = new Menu();
                     readKey = false;
+                    _shouldEndProgram = false;
                 }
             }
-            //return output;
         }
 
-        public bool ShouldEndProgram() => throw new NotImplementedException();
+        public bool ShouldEndProgram() => _shouldEndProgram; 
     }
 }
