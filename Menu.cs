@@ -4,8 +4,7 @@ using MathGame.MiniGames.MathGames;
 using MathGame.Options;
 using MathGame.Options.SubOption;
 
-namespace MathGame
-{
+namespace MathGame;
     public class Menu
     {
         public static void Run()
@@ -27,6 +26,10 @@ namespace MathGame
                 {
                     quit.Show();
                     shouldEndProgram = option.ShouldEndProgram();
+                }
+                else if (option is ViewHistory history)
+                {
+                    history.Play()
                 }
             }
         }
@@ -116,4 +119,3 @@ namespace MathGame
             Console.WriteLine("Q- Quit");
         }
     }
-}
