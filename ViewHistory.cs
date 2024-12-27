@@ -34,8 +34,7 @@ public class ViewHistory
 
             Console.WriteLine("\n Press b to go back to games history");
 
-            while (Console.ReadKey().KeyChar != 'b')
-                ;
+            while (Console.ReadKey().KeyChar != 'b') {}
         }
     }
 
