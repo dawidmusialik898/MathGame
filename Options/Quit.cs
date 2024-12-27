@@ -1,6 +1,6 @@
-﻿using MathGame.MiniGames.MathGames;
+﻿using MathGame.Options.MathGames;
 
-namespace MathGame.Options.SubOption
+namespace MathGame.Options
 {
     internal class Quit : IOption 
     {

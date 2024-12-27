@@ -1,4 +1,5 @@
 ﻿using MathGame.Options;
+using MathGame.Options.MathGames;
 
 namespace MathGame
 {

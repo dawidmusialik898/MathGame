@@ -1,4 +1,4 @@
-﻿namespace MathGame.MiniGames.MathGames
+﻿namespace MathGame.Options.MathGames
 {
     public interface  IMathGame
     {

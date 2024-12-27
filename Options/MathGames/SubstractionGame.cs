@@ -1,7 +1,6 @@
-﻿
-using MathGame.Options;
+﻿using MathGame.Options;
 
-namespace MathGame.MiniGames.MathGames
+namespace MathGame.Options.MathGames
 {
     internal class SubstractionGame : IMathGame, IOption
     {

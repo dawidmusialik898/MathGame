@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 
-using MathGame.MiniGames.MathGames;
 using MathGame.Options;
-using MathGame.Options.SubOption;
+using MathGame.Options.MathGames;
 
 namespace MathGame;
     public class Menu
@@ -29,7 +28,7 @@ namespace MathGame;
                 }
                 else if (option is ViewHistory history)
                 {
-                    history.Play()
+                    history.Play();
                 }
             }
         }
@@ -97,7 +96,6 @@ namespace MathGame;
                     's' or 'S' => new SubstractionGame(),
                     'm' or 'M' => new MultiplicationGame(),
                     'd' or 'D' => new DivisionGame(),
-                    'x' or 'X' => new RandomGame(),
                     'v' or 'V' => new ViewHistory(),
                     'q' or 'Q' => new Quit(),
                     _ => null,
@@ -115,7 +113,6 @@ namespace MathGame;
             Console.WriteLine("S- Subtraction");
             Console.WriteLine("M- Multiplication");
             Console.WriteLine("D- Division");
-            Console.WriteLine("X- Random choice");
             Console.WriteLine("Q- Quit");
         }
     }

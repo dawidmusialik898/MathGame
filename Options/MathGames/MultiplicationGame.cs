@@ -1,6 +1,6 @@
 ﻿using MathGame.Options;
 
-namespace MathGame.MiniGames.MathGames
+namespace MathGame.Options.MathGames
 {
     internal class MultiplicationGame : IMathGame, IOption
     {
