@@ -2,7 +2,8 @@
 
 try
 {
-    Menu.Run();
+    var menu = new Menu();
+    menu.Run();
 }
 catch (NotImplementedException)
 {

@@ -1,6 +1,6 @@
 ﻿namespace MathGame.MathGames;
 
-internal class AdditionGame : IMathGame
+public class AdditionGame : IMathGame
 {
     public string GameName { get; set; } = "Addition";
     public int CorrectAnswers { get; set; } = 0;

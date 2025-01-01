@@ -6,30 +6,107 @@ namespace MathGame;
 
 public class Menu
 {
-    public static void Run()
+    private readonly GameController _gameController = new GameController();
+
+    public void Run()
     {
         while (true)
         {
-            Show();
+            Console.Clear();
+            Console.WriteLine("\nV- View history games");
+            Console.WriteLine("A- Addition");
+            Console.WriteLine("S- Subtraction");
+            Console.WriteLine("M- Multiplication");
+            Console.WriteLine("D- Division");
+            Console.WriteLine("Q- Quit");
 
-            var option = ChooseOption();
+            var key = Console.ReadKey();
 
-            if (option is IMathGame game)
+            if(key.Key == ConsoleKey.A)
             {
+                var game = _gameController.GetAdditionGame();
                 PlayGame(game);
-                GameHistoryService.AddGameToHistory(game);
+                _gameController.AddGameToHistory(game);
             }
-            else if (option is Quit quit)
+
+            if(key.Key == ConsoleKey.S)
             {
-                var shouldQuit = quit.OpenQuitDialogue();
-                if (shouldQuit)
+                var game = _gameController.GetSubtractionGame();
+                PlayGame(game);
+                _gameController.AddGameToHistory(game);
+            }
+
+            if(key.Key == ConsoleKey.M)
+            {
+                var game = _gameController.GetMultiplicationGame();
+                PlayGame(game);
+                _gameController.AddGameToHistory(game);
+            }
+
+            if(key.Key == ConsoleKey.D)
+            {
+                var game = _gameController.GetDivisionGame();
+                PlayGame(game);
+                _gameController.AddGameToHistory(game);
+            }
+
+            if(key.Key == ConsoleKey.V)
+            {
+                var history = _gameController.GetHistory();
+                var historyAsString = GameHistoryService.GetHistoryAsString(history.GamesPlayed);
+                var input = "";
+                while (input != "back")
                 {
-                    return;
+                    foreach (var game in historyAsString)
+                    {
+                        Console.WriteLine(game);
+                    }
+                    Console.WriteLine("If you want to check game details, type 'get <id>'");
+                    Console.WriteLine("To go back type 'back'");
+
+                    input = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(input) && input.StartsWith("get "))
+                    {
+                        var getWords = input.Split(" ");
+                        if (getWords.Length == 2 && int.TryParse(getWords[1], out var result))
+                        {
+                            Console.Clear();
+                            var historyOfId = GameHistoryService.GetHistoryOfId(result,history.GamesPlayed);
+                            if (historyOfId is null)
+                                Console.WriteLine("Game not found");
+                            else
+                                foreach (var item in historyOfId)
+                                {
+                                    Console.WriteLine(item);
+                                }
+
+                                Console.WriteLine("\n Press b to go back to games history");
+
+                                while (Console.ReadKey().KeyChar != 'b') {}
+                        }
+                    }
                 }
+                
             }
-            else if (option is ViewHistory history)
+
+            if(key.Key == ConsoleKey.Q)
             {
-                history.Play();
+                while(true)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Do you really want to quit? (Y)es/(N)o");
+
+                    var quitResponse = Console.ReadKey();
+
+                    if(quitResponse.Key == ConsoleKey.Y)
+                    {
+                        return;
+                    }
+                    else if(quitResponse.Key == ConsoleKey.N)
+                    {
+                        break;
+                    }
+                }
             }
         }
     }
@@ -39,8 +116,10 @@ public class Menu
         while (true)
         {
             var (first, second, correctResult, ope) = game.GetEquasionArguments();
-            
-            ShowContent(first, second, ope);
+  
+            Console.Clear();
+            Console.WriteLine("\nType end to end the option");
+            Console.WriteLine($"\n{first} {ope} {second}");
 
             var clock = Stopwatch.StartNew();
             var input = Console.ReadLine();
@@ -76,45 +155,5 @@ public class Menu
                 correctResult = correctResult,
             });
         }
-    }
-
-    private static void ShowContent(int first, int second, char ope)
-    {
-        Console.Clear();
-        Console.WriteLine("\nType end to end the option");
-        Console.WriteLine($"\n{first} {ope} {second}");
-    }
-
-    private static object ChooseOption()
-    {
-        object? output = null;
-        
-        while (output is null)
-        {
-            var key = Console.ReadKey();
-            output = key.KeyChar switch
-            {
-                'a' or 'A' => new AdditionGame(),
-                's' or 'S' => new SubstractionGame(),
-                'm' or 'M' => new MultiplicationGame(),
-                'd' or 'D' => new DivisionGame(),
-                'v' or 'V' => new ViewHistory(),
-                'q' or 'Q' => new Quit(),
-                _ => null,
-            };
-        }
-
-        return output;
-    }
-
-    private static void Show()
-    {
-        Console.Clear();
-        Console.WriteLine("\nV- View history games");
-        Console.WriteLine("A- Addition");
-        Console.WriteLine("S- Subtraction");
-        Console.WriteLine("M- Multiplication");
-        Console.WriteLine("D- Division");
-        Console.WriteLine("Q- Quit");
     }
 }
