@@ -10,9 +10,10 @@ catch (NotImplementedException)
     Console.Write("\nChosen game was not implemented yet. Pres any key to go to Menu\n");
     Console.ReadKey();
 }
-catch (Exception)
+catch (Exception ex)
 {
     Console.WriteLine("\nUnexpected error occured, closing the game.\n");
+    Console.WriteLine($"\nException message: {ex.Message}\n");
 }
 
 Console.WriteLine("\nGood Bye!\n");

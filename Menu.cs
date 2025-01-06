@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 
 using MathGame.MathGames;
 
@@ -53,40 +54,7 @@ public class Menu
             if(key.Key == ConsoleKey.V)
             {
                 var history = _gameController.GetHistory();
-                var historyAsString = GameHistoryService.GetHistoryAsString(history.GamesPlayed);
-                var input = "";
-                while (input != "back")
-                {
-                    foreach (var game in historyAsString)
-                    {
-                        Console.WriteLine(game);
-                    }
-                    Console.WriteLine("If you want to check game details, type 'get <id>'");
-                    Console.WriteLine("To go back type 'back'");
-
-                    input = Console.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(input) && input.StartsWith("get "))
-                    {
-                        var getWords = input.Split(" ");
-                        if (getWords.Length == 2 && int.TryParse(getWords[1], out var result))
-                        {
-                            Console.Clear();
-                            var historyOfId = GameHistoryService.GetHistoryOfId(result,history.GamesPlayed);
-                            if (historyOfId is null)
-                                Console.WriteLine("Game not found");
-                            else
-                                foreach (var item in historyOfId)
-                                {
-                                    Console.WriteLine(item);
-                                }
-
-                                Console.WriteLine("\n Press b to go back to games history");
-
-                                while (Console.ReadKey().KeyChar != 'b') {}
-                        }
-                    }
-                }
-                
+                ShowHistory(history);       
             }
 
             if(key.Key == ConsoleKey.Q)
@@ -103,12 +71,77 @@ public class Menu
                         return;
                     }
                     else if(quitResponse.Key == ConsoleKey.N)
-                    {
+                  {
                         break;
                     }
                 }
             }
         }
+    }
+
+    private static void ShowHistory(HistoryModel history)
+    {
+        var input = string.Empty;
+        while (input != "back")
+        {
+            ShowGames(history); 
+            input = Console.ReadLine();
+            
+            var inputIsValid = TryGetGameId(input, out var gameId);
+
+            if(inputIsValid)
+            {
+                Console.Clear();
+                var historyOfId = GameHistoryService
+                    .GetHistoryOfId(gameId, history.GamesPlayed);
+                
+                if (historyOfId is null)
+                {
+                    Console.WriteLine("Game not found");
+                }
+                else
+                {
+                    historyOfId.ToList().ForEach(x => Console.WriteLine(x));
+                }
+
+                Console.WriteLine("\n Press b to go back to games history");
+
+                while (Console.ReadKey().KeyChar != 'b') {}
+            }
+        }
+    }
+
+    private static bool TryGetGameId(string? input, out int gameId)
+    {
+        gameId = -1;
+
+        if (string.IsNullOrWhiteSpace(input) || !input.StartsWith("get "))
+        {
+            return false;
+        }
+        
+        var getWords = input.Split(" ");
+        if (getWords.Length != 2 || !int.TryParse(getWords[1], out var result))
+        { 
+            return false;
+        }
+
+        gameId = result;
+        return true;
+    }
+
+    private static void ShowGames(HistoryModel history)
+    {
+        var games = GameHistoryService
+            .GetHistoryAsString(history.GamesPlayed);
+
+        foreach (var game in games)
+        {
+            Console.WriteLine(game);
+        }
+        
+        Console.WriteLine("If you want to check game details, type 'get <id>'");
+        Console.WriteLine("To go back type 'back'");
     }
 
     private static void PlayGame(IMathGame game)
