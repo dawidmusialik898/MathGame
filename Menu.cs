@@ -54,61 +54,87 @@ public class Menu
             if(key.Key == ConsoleKey.V)
             {
                 var history = _gameController.GetHistory();
-                ShowHistory(history);       
+                ShowGamesHistory(history);       
             }
 
             if(key.Key == ConsoleKey.Q)
             {
-                while(true)
+                var shouldQuit = QuitDialogue();
+                if (shouldQuit)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Do you really want to quit? (Y)es/(N)o");
-
-                    var quitResponse = Console.ReadKey();
-
-                    if(quitResponse.Key == ConsoleKey.Y)
-                    {
-                        return;
-                    }
-                    else if(quitResponse.Key == ConsoleKey.N)
-                  {
-                        break;
-                    }
+                    return;
                 }
             }
         }
     }
 
-    private static void ShowHistory(HistoryModel history)
+    private static bool QuitDialogue()
     {
-        var input = string.Empty;
-        while (input != "back")
+        Console.Clear();
+        Console.WriteLine("Do you really want to quit? (Y)es/(N)o");
+
+        while(true)
         {
-            ShowGames(history); 
-            input = Console.ReadLine();
-            
-            var inputIsValid = TryGetGameId(input, out var gameId);
+            var key = Console.ReadKey().Key;
 
-            if(inputIsValid)
+            if (key == ConsoleKey.Y)
+                return true;
+
+            if (key == ConsoleKey.N)
+                return false;
+        }
+    }
+
+    private static void ShowGamesHistory(HistoryModel history)
+    {
+        while (true)
+        {
+            var games = GameHistoryService
+                .GetHistoryAsString(history.GamesPlayed);
+
+            foreach (var game in games)
             {
-                Console.Clear();
-                var historyOfId = GameHistoryService
-                    .GetHistoryOfId(gameId, history.GamesPlayed);
-                
-                if (historyOfId is null)
-                {
-                    Console.WriteLine("Game not found");
-                }
-                else
-                {
-                    historyOfId.ToList().ForEach(x => Console.WriteLine(x));
-                }
+                Console.WriteLine(game);
+            }
+            
+            Console.WriteLine("If you want to check game details, type 'get <id>'");
+            Console.WriteLine("To go back type 'back'");
+ 
+            var input = Console.ReadLine();
 
-                Console.WriteLine("\n Press b to go back to games history");
+            if (input == "back")
+                return;
 
-                while (Console.ReadKey().KeyChar != 'b') {}
+            if(input.StartsWith("get ") && input.Length > 4)
+            {
+                ShowGameDetails(input, history);
             }
         }
+    }
+
+    private static void ShowGameDetails(string input, HistoryModel history)
+    {
+        var gameIdString = input.Split(' ')[1];
+        var parsedSuccessfully = int.TryParse(gameIdString, out var gameId);
+
+        Console.Clear();
+
+        var historyOfId = parsedSuccessfully 
+            ? GameHistoryService.GetHistoryOfId(gameId, history.GamesPlayed)
+            : null;
+        
+        if (historyOfId is null)
+        {
+            Console.WriteLine("Game not found");
+        }
+        else
+        {
+            historyOfId.ToList().ForEach(x => Console.WriteLine(x));
+        }
+
+        Console.WriteLine("\n Press b to go back to games history");
+
+        while (Console.ReadKey().KeyChar != 'b') {}
     }
 
     private static bool TryGetGameId(string? input, out int gameId)
@@ -128,20 +154,6 @@ public class Menu
 
         gameId = result;
         return true;
-    }
-
-    private static void ShowGames(HistoryModel history)
-    {
-        var games = GameHistoryService
-            .GetHistoryAsString(history.GamesPlayed);
-
-        foreach (var game in games)
-        {
-            Console.WriteLine(game);
-        }
-        
-        Console.WriteLine("If you want to check game details, type 'get <id>'");
-        Console.WriteLine("To go back type 'back'");
     }
 
     private static void PlayGame(IMathGame game)
