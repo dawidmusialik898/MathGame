@@ -105,7 +105,9 @@ public class Menu
             if (input == "back")
                 return;
 
-            if(input.StartsWith("get ") && input.Length > 4)
+            const string GetWithSpace = "get ";
+
+            if(input.StartsWith("get ") && input.Length > GetWithSpace.Length)
             {
                 ShowGameDetails(input, history);
             }
@@ -170,12 +172,14 @@ public class Menu
             var input = Console.ReadLine();
             clock.Stop();
 
-            var parsedSuccesfully = int.TryParse(input, out var result);
             if (input == "end")
             {
                 return;
             }
-            else if (parsedSuccesfully && (result == correctResult))
+            
+            var parsedSuccesfully = int.TryParse(input, out var result);
+            
+            if (parsedSuccesfully && (result == correctResult))
             {
                 game.CorrectAnswers++;
             }
