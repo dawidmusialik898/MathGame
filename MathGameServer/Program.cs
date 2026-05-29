@@ -27,24 +27,27 @@ var handler = await listener.AcceptAsync();
 
 while (true)
 {
+    var input = Console.ReadLine();
     var buffer = new byte[1024];
     var receivedBytes = await handler.ReceiveAsync(buffer, SocketFlags.None);
     var message = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
 
-    Console.WriteLine($"Received: {message}");
-
     const string eom = "<|EOM|>";
     const string ack = "<|ACK|>";
+
+    if(string.IsNullOrWhiteSpace(input) is false)
+    {
+        handler.SendAsync(Encoding.UTF8.GetBytes(input),0);
+    }
 
     var eomWasSend = message.IndexOf(eom) > -1;
     if (eomWasSend)
     {
-        Console.WriteLine($"Server received message: {message}");
+        Console.Write($"Server received message: {message}");
         
         var echoBytes = Encoding.UTF8.GetBytes(ack);
         await handler.SendAsync(echoBytes, 0);
-        Console.WriteLine("Server send acknowledge messge");
+        Console.WriteLine("Server send acknowledge messge\n");
 
-        break;
     }
 }
